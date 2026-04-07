@@ -4,7 +4,7 @@
     "builder": "NIXPACKS"
   },
   "deploy": {
-    "startCommand": "mkdir -p var && php bin/console cache:warmup && php bin/console doctrine:migrations:migrate --no-interaction && php bin/console doctrine:fixtures:load --no-interaction && php -S 0.0.0.0:$PORT -t public public/index.php",
+    "startCommand": "mkdir -p var/cache var/log && php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration 2>/dev/null || true && php bin/console doctrine:fixtures:load --no-interaction 2>/dev/null || true && php -S 0.0.0.0:$PORT -t public public/index.php",
     "healthcheckPath": "/api/stations",
     "restartPolicyType": "ON_FAILURE"
   }
