@@ -9,39 +9,39 @@ use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
-    // Stations réalistes à Bayeux (Normandie)
+    // slots = total emplacements, available = vélos disponibles
+    // Distribution volontairement variée pour la démonstration des filtres :
+    //   🔴 vide      → available = 0
+    //   🟠 presque   → available <= 25% du total
+    //   🟢 bien dispo → available > 25% du total
     private const STATIONS = [
-        ['name' => 'Gare de Bayeux',               'lat' => 49.2768, 'lng' => -0.6997],
-        ['name' => 'Cathédrale Notre-Dame',         'lat' => 49.2744, 'lng' => -0.7034],
-        ['name' => 'Musée de la Tapisserie',        'lat' => 49.2752, 'lng' => -0.7009],
-        ['name' => 'Place Charles de Gaulle',       'lat' => 49.2738, 'lng' => -0.7051],
-        ['name' => 'Hôpital de Bayeux',             'lat' => 49.2790, 'lng' => -0.6960],
-        ['name' => 'Musée Mémorial 1944',           'lat' => 49.2720, 'lng' => -0.6980],
-        ['name' => 'Place Saint-Patrice',           'lat' => 49.2760, 'lng' => -0.7070],
-        ['name' => 'Lycée Alain Chartier',          'lat' => 49.2800, 'lng' => -0.7020],
-        ['name' => 'Stade Municipal',               'lat' => 49.2820, 'lng' => -0.6950],
-        ['name' => 'Centre Commercial Intermarché', 'lat' => 49.2710, 'lng' => -0.7100],
+        ['name' => 'Gare de Bayeux',               'lat' => 49.2768, 'lng' => -0.6997, 'slots' => 15, 'available' => 8],  // 🟢 bien approvisionné
+        ['name' => 'Cathédrale Notre-Dame',         'lat' => 49.2744, 'lng' => -0.7034, 'slots' => 12, 'available' => 6],  // 🟢 bien approvisionné
+        ['name' => 'Musée de la Tapisserie',        'lat' => 49.2752, 'lng' => -0.7009, 'slots' => 10, 'available' => 0],  // 🔴 vide
+        ['name' => 'Place Charles de Gaulle',       'lat' => 49.2738, 'lng' => -0.7051, 'slots' => 14, 'available' => 2],  // 🟠 presque vide
+        ['name' => 'Hôpital de Bayeux',             'lat' => 49.2790, 'lng' => -0.6960, 'slots' => 20, 'available' => 0],  // 🔴 vide
+        ['name' => 'Musée Mémorial 1944',           'lat' => 49.2720, 'lng' => -0.6980, 'slots' => 10, 'available' => 5],  // 🟢 bien approvisionné
+        ['name' => 'Place Saint-Patrice',           'lat' => 49.2760, 'lng' => -0.7070, 'slots' => 16, 'available' => 1],  // 🟠 presque vide
+        ['name' => 'Lycée Alain Chartier',          'lat' => 49.2800, 'lng' => -0.7020, 'slots' => 12, 'available' => 0],  // 🔴 vide
+        ['name' => 'Stade Municipal',               'lat' => 49.2820, 'lng' => -0.6950, 'slots' => 18, 'available' => 9],  // 🟢 bien approvisionné
+        ['name' => 'Centre Commercial Intermarché', 'lat' => 49.2710, 'lng' => -0.7100, 'slots' => 14, 'available' => 3],  // 🟠 presque vide
     ];
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::STATIONS as $stationData) {
-            $totalSlots = rand(8, 20);
-            $availableCount = rand(1, $totalSlots);
-
+        foreach (self::STATIONS as $data) {
             $station = new Station();
-            $station->setName($stationData['name']);
-            $station->setLatitude($stationData['lat']);
-            $station->setLongitude($stationData['lng']);
-            $station->setTotalSlots($totalSlots);
+            $station->setName($data['name']);
+            $station->setLatitude($data['lat']);
+            $station->setLongitude($data['lng']);
+            $station->setTotalSlots($data['slots']);
 
             $manager->persist($station);
 
-            // Créer les vélos
-            for ($i = 0; $i < $totalSlots; $i++) {
+            for ($i = 0; $i < $data['slots']; $i++) {
                 $bike = new Bike();
                 $bike->setStation($station);
-                $bike->setStatus($i < $availableCount ? 'available' : 'reserved');
+                $bike->setStatus($i < $data['available'] ? 'available' : 'reserved');
                 $manager->persist($bike);
             }
         }
