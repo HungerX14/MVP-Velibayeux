@@ -15,9 +15,9 @@ class AppFixtures extends Fixture
     //   🟠 presque   → available <= 25% du total
     //   🟢 bien dispo → available > 25% du total
     private const STATIONS = [
-        ['name' => 'Mairie de Bayeux', 'lat' => 49.2744, 'lng' => -0.7034, 'slots' => 14, 'available' => 8],
-        ['name' => 'Gare de Bayeux',   'lat' => 49.2768, 'lng' => -0.6997, 'slots' => 15, 'available' => 6],
-        ['name' => 'Saint-Patrice',    'lat' => 49.2760, 'lng' => -0.7070, 'slots' => 16, 'available' => 4],
+        ['name' => 'Mairie de Bayeux', 'lat' => 49.2766, 'lng' => -0.7024, 'slots' => 14, 'available' => 8],
+        ['name' => 'Gare de Bayeux',   'lat' => 49.2698, 'lng' => -0.6975, 'slots' => 15, 'available' => 6],
+        ['name' => 'Saint-Patrice',    'lat' => 49.2756, 'lng' => -0.7063, 'slots' => 16, 'available' => 4],
     ];
 
     public function load(ObjectManager $manager): void
