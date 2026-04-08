@@ -29,12 +29,18 @@
         >🚲</span>
       </div>
 
-      <div class="tarif-card">
-        <div class="tarif-icon">💶</div>
-        <div>
-          <div class="tarif-price">1,50 €</div>
-          <div class="tarif-label">par 30 minutes</div>
-        </div>
+      <div class="tarif-label-title">Choisir une durée</div>
+      <div class="tarif-options">
+        <button
+          v-for="(t, i) in tarifs"
+          :key="t.label"
+          class="tarif-option"
+          :class="{ selected: selectedIndex === i }"
+          @click="selectedIndex = i"
+        >
+          <span class="tarif-option-duration">{{ t.label }}</span>
+          <span class="tarif-option-price">{{ t.price }} €</span>
+        </button>
       </div>
 
       <div class="form-group">
@@ -57,7 +63,7 @@
       >
         <span v-if="isLoading" class="btn-spinner"></span>
         <span v-else-if="station.availableBikes === 0">Aucun vélo disponible</span>
-        <span v-else>Réserver un vélo</span>
+        <span v-else>Réserver — {{ selectedTarif.price }} €</span>
       </button>
     </template>
 
@@ -68,17 +74,14 @@
         <h2 class="step-title">Vélo réservé !</h2>
         <p class="step-desc">Votre vélo à <strong>{{ station.name }}</strong> est prêt.</p>
       </div>
-      <div class="tarif-card">
-        <div class="tarif-icon">💶</div>
-        <div>
-          <div class="tarif-price">1,50 €</div>
-          <div class="tarif-label">à régler maintenant</div>
-        </div>
+      <div class="payment-summary">
+        <span class="payment-duration">{{ selectedTarif.label }}</span>
+        <span class="payment-price">{{ selectedTarif.price }} €</span>
       </div>
       <p v-if="error" class="error-msg">{{ error }}</p>
       <button class="btn btn-success" :disabled="isLoading" @click="pay">
         <span v-if="isLoading" class="btn-spinner"></span>
-        <span v-else>💳 Payer 1,50 €</span>
+        <span v-else>💳 Payer {{ selectedTarif.price }} €</span>
       </button>
     </template>
 
@@ -102,7 +105,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import api from '../services/api.js'
 import { saveReservation } from '../services/reservations.js'
 
@@ -111,11 +114,20 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'reserved'])
 
+const tarifs = [
+  { label: '1 heure',      price: 4  },
+  { label: 'Demi-journée', price: 10 },
+  { label: 'Journée',      price: 25 },
+  { label: '2 jours',      price: 50 },
+]
+
 const userName = ref(localStorage.getItem('roulibre_username') || '')
 const step = ref('form')
 const isLoading = ref(false)
 const error = ref('')
 const reservationResult = ref(null)
+const selectedIndex = ref(0)
+const selectedTarif = computed(() => tarifs[selectedIndex.value])
 
 async function reserve() {
   if (!userName.value.trim()) {
@@ -148,6 +160,8 @@ async function pay() {
       userName: userName.value,
       date: new Date().toISOString(),
       status: 'paid',
+      duration: selectedTarif.value.label,
+      price: selectedTarif.value.price,
     })
     step.value = 'done'
   } catch {
@@ -208,18 +222,66 @@ async function pay() {
 .bike-slot { font-size: 1.15rem; line-height: 1; }
 .slot-reserved { opacity: 0.18; filter: grayscale(1); }
 
-.tarif-card {
+.tarif-label-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.tarif-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tarif-option {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 4px;
+  padding: 12px 8px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.tarif-option:active { transform: scale(0.97); }
+.tarif-option.selected {
+  border: 3px solid var(--green);
+  background: var(--green);
+}
+.tarif-option-duration {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.tarif-option.selected .tarif-option-duration {
+  color: rgba(255, 255, 255, 0.85);
+}
+.tarif-option-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.tarif-option.selected .tarif-option-price {
+  color: white;
+}
+
+.payment-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: var(--blue-light);
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 16px;
 }
-.tarif-icon  { font-size: 1.6rem; }
-.tarif-price { font-size: 1.2rem; font-weight: 800; color: var(--blue-dark); }
-.tarif-label { font-size: 0.75rem; color: var(--text-muted); }
+.payment-duration { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+.payment-price    { font-size: 1.3rem; font-weight: 800; color: var(--blue-dark); }
 
 .form-group { margin-bottom: 14px; }
 .form-group label {
