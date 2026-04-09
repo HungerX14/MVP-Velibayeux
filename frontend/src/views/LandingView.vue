@@ -4,7 +4,7 @@
     <!-- ══ NAV ══ -->
     <nav class="nav" :class="{ scrolled: isScrolled }">
       <a href="/" class="nav-logo">
-        <div class="logo-icon">🚲</div>
+        <img src="/logo.png" alt="Roue Libre" class="logo-icon" />
         <span>Roue Libre</span>
       </a>
       <div class="nav-links">
@@ -253,7 +253,7 @@
     <footer>
       <div class="footer-inner">
         <div class="footer-logo">
-          <div class="logo-icon">🚲</div>
+          <img src="/logo.png" alt="Roue Libre" class="logo-icon" />
           <div>
             <strong>Roue Libre</strong>
             <span>Bayeux, Normandie</span>
@@ -320,11 +320,11 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
 }
 .nav.scrolled .nav-logo { color: #111827; }
 .logo-icon {
-  width: 34px; height: 34px;
-  background: #5DC93A;
+  width: 34px;
+  height: 34px;
   border-radius: 9px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1rem;
+  object-fit: cover;
+  flex-shrink: 0;
 }
 .nav-links {
   display: flex;
