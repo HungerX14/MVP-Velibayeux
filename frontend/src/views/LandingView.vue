@@ -18,7 +18,7 @@
     <section class="hero">
       <div class="hero-bg">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/e/e0/Main_entrance_cathedral_Bayeux.jpg"
+          src="https://upload.wikimedia.org/wikipedia/commons/9/91/Cath%C3%A9drale_Notre-Dame_de_Bayeux._Vue_depuis_l%27h%C3%B4tel_du_doyen.jpg"
           alt="Cathédrale de Bayeux"
           class="hero-img"
         />
@@ -370,7 +370,7 @@ onUnmounted(() => window.removeEventListener('scroll', onScroll))
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center 20%;
   filter: brightness(0.75);
 }
 .hero-overlay {

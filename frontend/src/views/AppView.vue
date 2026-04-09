@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div class="app-layout">
 
     <!-- ══════════════════════════════════════════
          SIDEBAR — desktop uniquement
@@ -247,40 +247,11 @@ function closeStation() {
 }
 </script>
 
-<style>
-/* ══ Variables ══ */
-:root {
-  --green:        #5DC93A;
-  --green-dark:   #4AAD2E;
-  --green-light:  #EDF9E8;
-  --blue:         #4DC3E8;
-  --blue-dark:    #2FA8CC;
-  --blue-light:   #E3F6FC;
-  --text:         #111827;
-  --text-muted:   #6B7280;
-  --bg:           #F4F6F8;
-  --white:        #FFFFFF;
-  --border:       #E5E7EB;
-  --radius:       16px;
-  --sidebar-w:    360px;
-  --topbar-h:     58px;
-  --nav-h:        62px;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html, body {
-  height: 100%;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  -webkit-font-smoothing: antialiased;
-}
-
+<style scoped>
 /* ══ Root layout ══ */
-#app {
+.app-layout {
   display: flex;
-  flex-direction: row;   /* toujours flex-row, sidebar cachée sur mobile */
+  flex-direction: row;
   height: 100dvh;
   width: 100%;
   overflow: hidden;
