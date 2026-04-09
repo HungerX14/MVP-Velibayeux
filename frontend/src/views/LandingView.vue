@@ -512,8 +512,9 @@ section h2 {
 .section-sub {
   color: #6B7280;
   font-size: 1rem;
-  margin-bottom: 52px;
+  margin: 0 auto 52px;
   max-width: 480px;
+  text-align: center;
 }
 
 /* ── SCREENSHOTS ── */
