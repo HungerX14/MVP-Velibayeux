@@ -117,8 +117,8 @@ const emit = defineEmits(['close', 'reserved'])
 const tarifs = [
   { label: '1 heure',      price: 4  },
   { label: 'Demi-journée', price: 10 },
-  { label: 'Journée',      price: 25 },
-  { label: '2 jours',      price: 50 },
+  { label: 'Journée',      price: 18 },
+  { label: '2 jours',      price: 35 },
 ]
 
 const userName = ref(localStorage.getItem('roulibre_username') || '')
