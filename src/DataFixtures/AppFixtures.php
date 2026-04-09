@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
     private const STATIONS = [
         ['name' => 'Mairie de Bayeux', 'lat' => 49.2766, 'lng' => -0.7024, 'slots' => 14, 'available' => 8],
         ['name' => 'Gare de Bayeux',   'lat' => 49.2698, 'lng' => -0.6975, 'slots' => 15, 'available' => 6],
-        ['name' => 'Saint-Patrice',    'lat' => 49.2756, 'lng' => -0.7063, 'slots' => 16, 'available' => 4],
+        ['name' => 'Saint-Patrice',    'lat' => 49.28121531117451, 'lng' => -0.7070357273234474, 'slots' => 16, 'available' => 4],
     ];
 
     public function load(ObjectManager $manager): void
